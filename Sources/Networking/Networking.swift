@@ -8,14 +8,21 @@
 import Foundation
 import UIKit
 
+public enum NetworkingHTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+}
+
 public class Networking {
 
-    public func performNetworkRequest(url: String, method: String = "GET", params: [String: Any]?, headers: [String: String]?, completion: @escaping (Any?, String?) -> Void) {
+    public func performNetworkRequest(url: String, method: NetworkingHTTPMethod, params: [String: Any]?, headers: [String: String]?, completion: @escaping (Any?, String?) -> Void) {
         guard let url = URL(string: url) else {
             return
         }
         var request = URLRequest(url: url)
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         if let params = params, params.count > 0, let body = try? JSONSerialization.data(withJSONObject: params, options: [])
         {
             request.httpBody = body
